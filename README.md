@@ -1,6 +1,5 @@
 # VoxLords
-## Play Game Here
-http://voxlords.webgl.nu
+Play the game here: http://voxlords.webgl.nu
 
 ## Description
 VoxLords is a ThreeJS WebGL game with a simple voxel engine. It also provides a implementation for loading .vox files that are created with MagicaVoxel (https://voxel.codeplex.com/).
