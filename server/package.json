@@ -1,12 +1,10 @@
 {
-  "name": "saving-nemo-server",
+  "name": "voxlords-server",
   "private": true,
   "version": "0.0.1",
-  "description": "Saving Nemo web-backend server",
-  "author": "Magnus Persson <magnus@nergal.se>",
+  "description": "Test webserver",
+  "author": "Magnus Persson <nergal@nergal.se>",
   "dependencies": {
-    "sqlite3": "2.0.18"
     "socket.io": "1.0.6"
-    "dblite": "0.4.1"
   }
 }
