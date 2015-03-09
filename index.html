@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
+    <title>VoxLords</title>
+
+    <script src="libs/three.min.js"></script>
+    <script src="libs/Stats.js"></script>
+    <script src="libs/jquery-1.11.1.min.js"></script>
+    <script src="libs/THREEx.KeyboardState.js"></script>
+    <script src="libs/THREEx.WindowResize.js"></script>
+     <style>
+html, body {
+    cusor: none;
+    background-color: #000000;
+    color: #ffffff;
+    font-family:Monospace;
+    font-size:13px;
+    text-align:center;
+    font-weight: bold;
+
+    background-color: #000000;
+    margin: 0 auto;
+    overflow: hidden; 
+    height: 100%;
+    width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+@font-face
+{
+    font-family: vox; 
+    src: url(gui/gui1/vox.ttf);
+}
+.vox_font {
+    font-family: vox;
+}
+
+a {
+    color: #677672;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #D0D0D0;
+}
+
+.progress-bar {
+    background-color: #1a1a1a;
+    height: 25px;
+    padding: 5px;
+    width: 350px;
+    margin: 50px 0;         
+    border-radius: 5px;
+    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;           
+}
+
+.progress-bar span {
+    display: inline-block;
+    height: 100%;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    transition: width .4s ease-in-out;    
+}
+.green span {
+      background-color: #677672;
+}
+.twitter-share-button[style] { vertical-align: text-bottom !important; }
+    </style>
+  </head>
+  <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/sv_SE/sdk.js#xfbml=1&appId=827352813988000&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60080938-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+ <audio id="song" autoplay="autoplay" loop="loop">
+    <source src="sound/intro3.mp3" type="audio/mpeg">
+ </audio>
+
+
+<div style="position: absolute; margin-bottom: 0px;" id="stats"></div>
+<!-- <canvas id="myCanvas" style="border:1px solid #d3d3d3;"> -->
+<!-- <div id="status" style="align: left; margin-left: 100px; position: absolute; display: block; z-index: 100;">
+    <div id="status_1"></div>
+    <div id="status_2"></div>
+    <div id="status_3"></div>
+    <div id="status_4"></div>
+    <div id="button_1"></div>
+</div>
+-->
+<div id="header" style="position: relative; z-index: 100; text-align: center; width: 80%; height: 7%; margin: 0 auto; margin-top: 10px;">
+    <img style="position: relative; margin-bottom: 0px; z-index: 100;" src="gui/gui1/border.png"/>
+    <p style="text-shadow: 2px 2px #21373f; position: relative; font-size: 30px; color: #677672; margin: 0 auto; margin-top: -50px; z-index: 100;" class="vox_font">VoxLords <b style="font-size: 15px;"></b></p>
+</div>
+
+<div id="main" style=
+    "
+    background: url('gui/gui1/bg.png') no-repeat;
+    background-size: cover;
+    text-align: center;
+    border: 6px #7e897d double;
+    -moz-box-shadow: 1px 5px 22px 12px #21373f;
+    -webkit-box-shadow: 1px 5px 22px 12px #21373f;
+    box-shadow: 1px 5px 22px 12px #21373f;
+    width: 80%; height: 70%; margin: 0 auto; margin-top: 50px;">
+ <div id="menu" style="margin: 0 auto; margin-top: 2%;">
+ </div>
+ <p id="statusCenter" style="position: absolute; align: center; text-shadow: 1px 1px #000000; display: none; font-size: 30px; color: #FF3333; margin: 0 auto; opacity: 0.9; margin-top: 30px; z-index: 100; width: 80%; " class="vox_font"></p> 
+ <p id="status" style="position: absolute; align: center; display: none; text-shadow: 1px 1px #000000; font-size: 30px; color: #FDD017; margin: 0 auto; opacity: 0.9; margin-top: 5px; z-index: 100;" class="vox_font"></p>
+ <p id="statusEnemies" style="position: absolute; align: right; display: none; text-shadow: 1px 1px #000000; font-size: 20px; color: #FFA017; margin: 0 auto; opacity: 0.9; margin-top: 35px; z-index: 100;" class="vox_font"></p>
+
+
+<!-- Render container -->
+ <div style="position: relative; z-index: 1; display: none;" id="container"></div>
+ </div>
+
+<div id="weapons" style="display: none; position: relative; margin: 0 auto; width: 100%; height: 50px; margin-top: -55px; z-index: 110; ">
+    <div style="position: absolute; width: 100%; margin-left: -51px;">
+        <img id="weapon1" style="height: 50px; width: 50px; " src="gui/gui1/smallshot.png"/>
+        <h2 style="position: absolute; top: -15px; width: 100%; font-size: 30px; color: #000000;" class="vox_font">1</h2>
+    </div>
+    <div style="position: absolute; width: 100%; margin-left: 0px;">
+        <img id="weapon2" style="opacity: 0.3; height: 50px; width: 50px; " src="gui/gui1/tromb.png"/>
+        <h2 style="position: absolute; top: -15px; width: 100%; font-size: 30px; color: #000000;" class="vox_font">2</h2>
+    </div>
+    <div style="position: absolute; width: 100%; margin-left: 52px;">
+        <img id="weapon3" style="opacity: 0.3; height: 50px; width: 50px; " src="gui/gui1/bomb.png"/>
+        <h2 style="position: absolute; top: -15px; width: 100%; font-size: 30px; color: #000000;" class="vox_font">3</h2>
+    </div>
+</div>
+
+<br>
+<a href="javascript:MuteSound();" id="muteSound"><img src="gui/gui1/box_checked.png"/>Sound</a>
+<a href="javascript:MuteSong();" id="muteSong"><img src="gui/gui1/box_checked.png"/>Music</a>
+<br>
+<br>
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="lallassu" data-hashtags="threejs #html5 #webgl #webgames">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div class="fb-share-button" data-href="http://voxlords.webgl.nu" data-layout="button_count"></div>
+ <!-- Credits -->
+ <div style="display: none;" id="credits">
+     <img style="position: relative; margin-bottom: 0px; z-index: 100;" src="gui/gui1/story.png"/>
+    <p style="text-shadow: 1px 1px #21373f; position: relative; font-size: 30px; color: #677672; margin: 0 auto; margin-top: -180px; z-index: 100;" class="vox_font">Credits</p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #000000;" href="http://threejs.org">ThreeJS Library</a></p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #000000;" href="http://soundbible.com">Soundbible</a></p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #000000;" href="http://opengameart.org">Open Game Art</a></p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #000000;" href="https://voxel.codeplex.com/">MagicaVoxel</a></p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #808080; margin: 0 auto; margin-top: 0px; z-index: 100;">My Wife for Voxilia voice</p>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #808080; margin: 0 auto; margin-top: 0px; z-index: 100;">My Son for testing & ideas</p>
+    
+    <br>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a href="javascript:Menu();">Back to Menu</a></p>
+</div>
+
+
+ <!-- Map selection -->
+ <div style="display: none;" id="selectMap">
+     <img style="position: relative; margin-bottom: 0px; z-index: 100;" src="gui/gui1/story.png"/>
+    <p style="text-shadow: 1px 1px #21373f; position: relative; font-size: 30px; color: #677672; margin: 0 auto; margin-top: -180px; z-index: 100;" class="vox_font">Select Map</p>
+    <p style="width: 300px; position: relative; font-size: 20px;  margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #;" class="vox_font" href="javascript:Start(1);">1. Underworld</a></p>
+    <p style="width: 300px; position: relative; font-size: 20px;  margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #;" class="vox_font" href="javascript:Start(2);">2. Island of St. Vox</a></p>
+    <p style="width: 300px; position: relative; font-size: 20px;  margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #;" class="vox_font" href="javascript:Start(3);">3. North Pole</a></p>
+    <p style="width: 300px; position: relative; font-size: 20px;  margin: 0 auto; margin-top: 0px; z-index: 100;"><a style="color: #;" class="vox_font" href="javascript:Start(4);">4. Voxadu Beach</a></p>
+    <br>
+    <p style="width: 300px; position: relative; font-size: 12px; color: #000000; margin: 0 auto; margin-top: 0px; z-index: 100;"><a href="javascript:Menu();">Back to Menu</a></p>
+</div>
+<!-- Menu content -->
+<div id="menu_content" style="display: none;">
+     <img style="position: relative; margin-bottom: 0px; z-index: 100;" src="gui/gui1/story.png"/>
+    <p style="text-shadow: 1px 1px #21373f; position: relative; font-size: 20px; color: #677672; margin: 0 auto; margin-top: -180px; z-index: 100;" class="vox_font">Once upon a time...</p>
+    <p style="width: 280px; position: relative; font-size: 10px; color: #677672; margin: 0 auto; margin-top: 0px; z-index: 100;">
+     Vox, prince of Voxadu, lived peacefully
+     with his princess Voxilia. One dark and rainy day the four evil lords kidnapped Voxilia.
+     They all wanted to rule Voxadu and threatened to kill Voxilia if not Vox resigned the throne.
+ <br><br>
+     Vox took up his powerful shield, gained power from the grand sorcerer of Voxadu and went out to save Voxilia
+     from the underworld...
+     
+    </p>
+    <img style="margin-top: 60px;" src="gui/gui1/option.png"/>
+    <p style="position: relative; margin-top: -50px; margin-bottom: 10px; font-size: 30px; text-shadow: 1px 1px #21373f;" class="vox_font"><a href="javascript:Start(1);">New Game</a></p>
+    <img style="margin-top: 0px;" src="gui/gui1/option.png"/>
+    <p style="position: relative; margin-top: -50px; margin-bottom: 10px; font-size: 30px; text-shadow: 1px 1px #21373f;" class="vox_font"><a href="javascript:SelectMap();">Select Map</a></p>
+    <img style="margin-top: 0px;" src="gui/gui1/option.png"/>
+    <p style="position: relative; margin-top: -50px; font-size: 30px; text-shadow: 1px 1px #21373f;" class="vox_font"><a href="javascript:Credits();">Credits</a></p>
+</div>
+
+
+ <script src="js/utils.js"></script>
+ <script src="js/block.js"></script>
+ <script src="js/pool.js"></script>
+ <script src="js/particleEngine.js"></script>
+ <script src="js/chunk.js"></script>
+ <script src="js/world.js"></script>
+ <script src="js/vox.js"></script>
+ <script src="js/objects.js"></script>
+ <script src="js/player.js"></script>
+ <script src="js/enemies.js"></script>
+ <script src="js/physblock.js"></script>
+ <script src="js/shot.js"></script>
+ <script src="js/loader.js"></script>
+ <script src="js/items.js"></script>
+ <script src="js/princess.js"></script>
+ <script src="js/chunkManager.js"></script>
+ <script src="js/procObjects.js"></script>
+ <script src="js/mapManager.js"></script>
+ <script src="js/main.js"></script>
+  </body>
+  <script>
+    $(document).ready( function() {
+        $('#menu').html($('#menu_content').html());
+      // MuteSound(true);
+
+        if(localStorage.getItem("reload") == 1) {
+            Start(localStorage.getItem("mapId"));
+            if(localStorage.getItem("sound") == 'true') {
+                   MuteSound();
+            }
+            if(localStorage.getItem("music") == 'true') {
+                   MuteSong(); 
+            }
+        }
+    });
+
+    var game = new Game();
+    function Start(mapId) {
+        $('#menu').hide();
+        var start = 0;
+        game.Init(mapId);
+    }
+    
+    function Credits() {
+        $('#menu').html($('#credits').html());
+    }
+
+    function SelectMap() {
+        $('#menu').html($('#selectMap').html());
+    }
+
+    function Menu() {
+        $('#menu').html($('#menu_content').html());
+    }
+    function MuteSound() {
+        if(!game.soundLoader.muted) {
+           // document.getElementById("song").volume = 0.0; 
+            game.soundLoader.muted = true;
+            localStorage.setItem("sound", game.soundLoader.muted);
+            $('#muteSound').html('<img src="gui/gui1/box_unchecked.png"/>Sound');
+        } else {
+            //document.getElementById("song").volume = 0.4; 
+            game.soundLoader.muted = false;
+            localStorage.setItem("sound", game.soundLoader.muted);
+            $('#muteSound').html('<img src="gui/gui1/box_checked.png"/>Sound');
+        }
+    }
+    function MuteSong() {
+        if(!game.songMuted) {
+            game.songMuted = true;
+            document.getElementById("song").volume = 0.0; 
+            $('#muteSong').html('<img src="gui/gui1/box_unchecked.png"/>Music');
+        } else {
+            game.songMuted = false;
+            document.getElementById("song").volume = 0.4; 
+            $('#muteSong').html('<img src="gui/gui1/box_checked.png"/>Music');
+        }
+    }
+
+  </script>
+</html>
