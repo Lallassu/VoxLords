@@ -5,6 +5,16 @@ VoxLords is a ThreeJS WebGL game with a simple voxel engine. It also provides a 
 
 I haven't had time to create some description of the code layout but if you have any questions, feel free to contact me (nergal@nergal.se).
 
+The game implements the following (and more):
+- Voxel engine with chunks 
+- Basic greedy algorithm for optimizing chunks
+- Sound loader with volume based on length to objects
+- Basic block physics
+- Voxel explosions
+- Reading game maps from PNG image files
+- ".vox" file loading into chunks
+- etc.. 
+
 ## Testing
 
 Install nodejs and run *"cd server; nodejs server.js"*. Then point your browser to *http://localhost:8081*
