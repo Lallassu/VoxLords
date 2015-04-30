@@ -1,6 +1,8 @@
 # VoxLords
 Play the game here: http://voxlords.webgl.nu
 
+Also on Chrome Experiments: https://www.chromeexperiments.com/experiment/voxlords
+
 A little game engine test: http://threejs.webgl.nu 
 
 ## Description
