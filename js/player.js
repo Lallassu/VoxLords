@@ -312,7 +312,7 @@ function Player() {
         } else {
             game.chunkManager.Blood(this.mesh.position.x, this.mesh.position.z, 2+Math.random()*1);
         }
-        $('#statusCenter').text("Vox were killed!");
+        $('#statusCenter').text("Vox was killed!");
         $('#statusCenter').fadeIn(1000);
         this.chunk.Explode(this.mesh.position);
         this.dead = true;
