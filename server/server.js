@@ -78,14 +78,18 @@ function Handler(req, res)
 	contentType = 'image/jpg';
 	break;
     }
+    var headers = {};
+    if (contentType)
+      headers['Content-Type'] = contentType;
+
     fs.exists(file, function(exists) {
 	if(exists) {
 	    fs.readFile(file,function(err,data) {
-		res.writeHead(200, {'Content-Type': contentType});
+		res.writeHead(200, headers);
 		res.end(data);
 	    });
 	} else {
-	    res.writeHead(404, {'Content-Type': contentType});
+	    res.writeHead(404, headers);
 	    res.end("Wizard killed the requested file with a Fireball! R.I.P "+file);
 	}
     });
