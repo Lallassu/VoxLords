@@ -22,7 +22,8 @@ The game implements the following (and more):
 - Voxel explosions
 - Reading game maps from PNG image files
 - ".vox" file loading into chunks
-- etc.. 
+- etc.....
+
 
 ## Testing
 
